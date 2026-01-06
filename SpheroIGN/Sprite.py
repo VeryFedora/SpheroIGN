@@ -1,6 +1,5 @@
 import pygame
 import pygame.image
-sprite_list = []
 
 
 class Scale:
@@ -9,34 +8,31 @@ class Scale:
         self.y = y;
 
 class Sprite:
+    sprite_list = []
 
     @staticmethod
     def renderSprites(screen):
-        for sprite in sprite_list:
+        for sprite in Sprite.sprite_list:
             sprite.render(screen);
 
     def __init__(self, showing : bool, position : Scale, scale : Scale, color : tuple = None, texture : pygame.image = None):
         # Position in rendering list
-        self.ID = len(sprite_list);
+        self.ID = len(Sprite.sprite_list);
         # Rendering properties
         self.showing = showing;
-        self.position = position
-        self.scale = scale
+        self.position = position;
+        self.scale = scale;
         self.color = color;
         self.texture = texture;
-        self.rect = pygame.rect.Rect(self.position.x, self.position.y, self.scale.x, self.scale.y);
-        sprite_list.append(self);
+        self.rect = pygame.rect.Rect(position.x, position.y, self.scale.x, self.scale.y);
+        Sprite.sprite_list.append(self);
         # Input and output
         self.clickCallback = None;
         self.isClicked = False;
 
     def render(self, screen):
         if self.showing:
-            pygame.draw.rect(screen, self.rect);
-
-    def move(self, x, y):
-        self.position.x += x;
-        self.position.y += y;
+            pygame.draw.rect(screen, self.rect, color=self.color);
 
     async def clicked(self):
         self.isClicked = True;

@@ -1,6 +1,8 @@
 import pygame
 import time 
 import sys
+
+import pygame.sprite
 import SpheroManager
 from Sprite import Sprite
 
@@ -21,26 +23,30 @@ UPDATE_RATE : int = 30; # Updates per second
 
 running : bool = True;
 while(running):
-    time.sleep(1/UPDATE_RATE);
-    events = pygame.event.get();
-    for event in events:
-        # Break and quit.
-        if event.type == pygame.QUIT:
-            running = False;
-            continue;
-        # Handle mouse events
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_pos = pygame.mouse.get_pos();
-            for sprite in Sprite.sprite_list:
-                if sprite.rect.collidepoint(mouse_pos):
-                    sprite.clicked();
-        # Triggers once user releases the mouse.
-        elif event.type == pygame.MOUSEBUTTONUP:
-            mouse_pos = pygame.mouse.get_pos();
-            for sprite in Sprite.sprite_list:
-                if sprite.rect.collidepoint(mouse_pos):
-                    sprite.released();
-    Sprite.renderSprites(screen)
+    try:
+        time.sleep(1/UPDATE_RATE);
+        events = pygame.event.get();
+        for event in events:
+            # Break and quit.
+            if event.type == pygame.QUIT:
+                running = False;
+                continue;
+            # Handle mouse events
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos();
+                for sprite in Sprite.sprite_list:
+                    if sprite.rect.collidepoint(mouse_pos):
+                        sprite.clicked();
+            # Triggers once user releases the mouse.
+            elif event.type == pygame.MOUSEBUTTONUP:
+                mouse_pos = pygame.mouse.get_pos();
+                for sprite in Sprite.sprite_list:
+                    if sprite.rect.collidepoint(mouse_pos):
+                        sprite.released();
+    except Exception:
+        endProgram("An error occurred during the main loop: " + Exception.__str__());
+        break;
+    Sprite.renderSprites(Sprite.sprite_list, screen);
     screen.fill(BACKGROUND_COLOR);
     pygame.display.flip();
     
