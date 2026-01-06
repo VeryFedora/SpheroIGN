@@ -1,33 +1,47 @@
-import spherov2
 import pygame
+import time 
+import sys
+import SpheroManager
+from Sprite import Sprite
 
 def endProgram(msg:str):
-        print("Program exited with message: " + msg)
-        exit(0);
-# Class that holds the sphero
-class Unit:
-    def __init__(self):
-        self.robot = spherov2.Sphero()
-        try:
-            self.robot.wake()
-            self.robot.connect()
-            print("Connected to Sphero RVR")
-        except Exception as e:
-            endProgram("Failed to connect to Sphero RVR: " + str(e))
+    pygame.quit();
+    print("Program exited with message: " + msg);
+    sys.exit(0);
 
-# Declare globals
-player : Unit
-# Enemies
-subroutine_alpha : Unit
-subroutine_beta : Unit
-subroutine_charlie : Unit
-subroutine_delta : Unit
-def init():
-    player = Unit()
+#### PROGRAM START #### 
 
-    subroutine_alpha = Unit()
-    subroutine_beta = Unit()
-    subroutine_charlie = Unit()
-    subroutine_delta = Unit()
+pygame.init()
+screen_dimensions = pygame.display.get_desktop_sizes();
+screen = pygame.display.set_mode((screen_dimensions[0][0], screen_dimensions[0][1]));
+pygame.display.set_caption("SpheroIGN");
 
-    endProgram("Program exited.")
+BACKGROUND_COLOR : tuple = (255, 255, 255)
+UPDATE_RATE : int = 30; # Updates per second
+
+running : bool = True;
+while(running):
+    time.sleep(1/UPDATE_RATE);
+    events = pygame.event.get();
+    for event in events:
+        # Break and quit.
+        if event.type == pygame.QUIT:
+            running = False;
+            continue;
+        # Handle mouse events
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos();
+            for sprite in Sprite.sprite_list:
+                if sprite.rect.collidepoint(mouse_pos):
+                    sprite.clicked();
+        # Triggers once user releases the mouse.
+        elif event.type == pygame.MOUSEBUTTONUP:
+            mouse_pos = pygame.mouse.get_pos();
+            for sprite in Sprite.sprite_list:
+                if sprite.rect.collidepoint(mouse_pos):
+                    sprite.released();
+    Sprite.renderSprites(screen)
+    screen.fill(BACKGROUND_COLOR);
+    pygame.display.flip();
+    
+endProgram("Program Completed");
