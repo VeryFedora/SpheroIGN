@@ -5,6 +5,7 @@ from CircleSprite import CircleSprite
 from MathHelperCoords import Reference
 class Button:
     button_list = []
+
     @staticmethod
     def renderButtons(screen):
         for button in Button.button_list:
