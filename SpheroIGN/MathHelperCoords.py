@@ -15,3 +15,8 @@ class Coords:
     def __init__(self, x : int,y : int):
         self.x = x
         self.y = y
+
+# A simple reference class to hold values by reference.
+class Reference:
+    def __init__(self, val):
+        self.value = val;

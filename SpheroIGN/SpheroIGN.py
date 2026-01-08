@@ -6,8 +6,6 @@ import UiElements
 import SpheroManager
 from Sprite import Sprite
 from CircleSprite import CircleSprite
-import MathHelperCoords
-#from settings import MathHelperCoords.getScreenSize()
 
 def endProgram(msg:str):
     pygame.quit();
