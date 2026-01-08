@@ -28,7 +28,12 @@ class Sprite:
         Sprite.sprite_list.append(self);
         # Input and output
         self.clickCallback = None;
+        self.releaseCallback = None;
         self.isClicked = False;
+
+
+    def move(self, x, y):
+        self.rect.move(x, y);
 
     def render(self, screen):
         if self.showing:
@@ -41,4 +46,5 @@ class Sprite:
 
     async def released(self):
         self.isClicked = False;
-    
+        if self.releaseCallback != None:
+            self.releaseCallback();
