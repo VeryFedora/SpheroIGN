@@ -14,6 +14,7 @@ COLOR_RED = (200, 0, 0);
 COLOR_DARK_GREY = (100, 100, 100);
 COLOR_GREY = (200,200,200);
 COLOR_GREEN = (0, 200, 100);
+COLOR_PURPLE = (50, 50, 150);
 
 # fires when the navigation mover is clicked
 @staticmethod
@@ -56,6 +57,7 @@ def initElements():
     home_button = Sprite(True, Coords(0, TOP_BAR_Y), Scale(130,100), COLOR_GREEN, None);
 
     ## Decoration for home page ##
-
     global circle_decor
+    circle_decor = CircleSprite(True, Coords(400, 400), 300, COLOR_PURPLE);
+
 
