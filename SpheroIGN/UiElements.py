@@ -10,6 +10,11 @@ class Reference:
 
 COLOR_BLUE = (0, 122, 255);
 COLOR_BLACK = (25, 25, 25);
+COLOR_RED = (200, 0, 0);
+COLOR_DARK_GREY = (100, 100, 100);
+COLOR_GREY = (200,200,200);
+COLOR_GREEN = (0, 200, 100);
+
 # fires when the navigation mover is clicked
 @staticmethod
 async def navigation_mover_clicked(stillclicked : Reference, item : CircleSprite, return_x : int, return_y : int):
@@ -23,7 +28,7 @@ async def navigation_mover_clicked(stillclicked : Reference, item : CircleSprite
 # CONSTANTS FOR UI ELEMENTS
 NAVIGATION_CONTAINER_RADIUS = 200;
 NAVIGATION_MOVER_RADIUS = 40;
-NAVIGATION_BORDER_SIZE = 15;
+NAVIGATION_BORDER_SIZE = 10;
 NAVIGATION_POSITION = Coords(1350, 700);
 
 TOP_BAR_Y = 0;
@@ -33,10 +38,24 @@ def initElements():
     global navigation_border # Black border around it all
     navigation_border = CircleSprite(True, NAVIGATION_POSITION, NAVIGATION_CONTAINER_RADIUS + NAVIGATION_BORDER_SIZE, COLOR_BLACK);
     global navigation_holder # Circle that contains the navigation mover
-    navigation_holder = CircleSprite(True, NAVIGATION_POSITION, NAVIGATION_CONTAINER_RADIUS, (200, 200, 200))
+    navigation_holder = CircleSprite(True, NAVIGATION_POSITION, NAVIGATION_CONTAINER_RADIUS, COLOR_GREY)
     global navigation_mover # Circle that the player actually controls
     navigation_mover = CircleSprite(True, NAVIGATION_POSITION, NAVIGATION_MOVER_RADIUS, COLOR_BLUE)
     #navigation_mover.clickCallback = navigation_mover_clicked
     # Top bar
     global top_bar
-    top_bar = Sprite(True, Coords(0,TOP_BAR_Y), Scale(3000,50), COLOR_BLUE, None);
+    top_bar = Sprite(True, Coords(0,TOP_BAR_Y), Scale(3000,100), COLOR_BLUE, None);
+    # Quit button on top bar
+    global quit_button
+    quit_button = Sprite(True, Coords(1590,TOP_BAR_Y), Scale(120,100), COLOR_RED, None);
+    # settings button
+    global settings_button
+    settings_button = Sprite(True, Coords(770, TOP_BAR_Y), Scale(150,100), COLOR_DARK_GREY, None);
+    # Home page button
+    global home_button
+    home_button = Sprite(True, Coords(0, TOP_BAR_Y), Scale(130,100), COLOR_GREEN, None);
+
+    ## Decoration for home page ##
+
+    global circle_decor
+
