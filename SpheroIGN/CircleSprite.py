@@ -21,4 +21,4 @@ class CircleSprite:
 
     def render(self, screen):
         if self.showing:
-            pygame.draw.circle(screen, self.color, (self.position.x+self.scale.x // 2, self.position.y + self.scale.y // 2), min(self.scale.x,self.scale.y)//2);
+            pygame.draw.circle(screen, self.color, (self.position.x + self.scale.x // 2, self.position.y + self.scale.y // 2), min(self.scale.x,self.scale.y)//2);
