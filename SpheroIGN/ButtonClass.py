@@ -3,6 +3,7 @@ import pygame.image
 
 class ButtonClass:
     button_list = []
+
     @staticmethod
     def renderButtons(screen):
         for button in ButtonClass.button_list:

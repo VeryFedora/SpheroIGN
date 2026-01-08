@@ -5,7 +5,6 @@ import sys
 import SpheroManager
 from Sprite import Sprite
 from CircleSprite import CircleSprite
-
 def endProgram(msg:str):
     pygame.quit();
     print("Program exited with message: " + msg);
