@@ -1,6 +1,6 @@
 from Sprite import Sprite
 from CircleSprite import CircleSprite
-import SpheroIGN
+from MathHelperCoords import Coords, Scale
 import pygame
 
 # A simple reference class to hold values by reference.
@@ -9,6 +9,7 @@ class Reference:
         self.value = val;
 
 COLOR_BLUE = (0, 122, 255);
+COLOR_BLACK = (25, 25, 25);
 # fires when the navigation mover is clicked
 @staticmethod
 async def navigation_mover_clicked(stillclicked : Reference, item : CircleSprite, return_x : int, return_y : int):
@@ -19,8 +20,23 @@ async def navigation_mover_clicked(stillclicked : Reference, item : CircleSprite
     item.position.x = return_x;
     item.position.y = return_y;
     return;
+# CONSTANTS FOR UI ELEMENTS
+NAVIGATION_CONTAINER_RADIUS = 200;
+NAVIGATION_MOVER_RADIUS = 40;
+NAVIGATION_BORDER_SIZE = 15;
+NAVIGATION_POSITION = Coords(1350, 700);
 
+TOP_BAR_Y = 0;
 
-# These are the two circles that make the central navigation dial.
-navigation_mover = CircleSprite(True, (1.0,1.0), COLOR_BLUE);
-navigation_mover.clickCallback = navigation_mover_clicked;
+def initElements():
+    # These are the three circles that make the central navigation dial.
+    global navigation_border # Black border around it all
+    navigation_border = CircleSprite(True, NAVIGATION_POSITION, NAVIGATION_CONTAINER_RADIUS + NAVIGATION_BORDER_SIZE, COLOR_BLACK);
+    global navigation_holder # Circle that contains the navigation mover
+    navigation_holder = CircleSprite(True, NAVIGATION_POSITION, NAVIGATION_CONTAINER_RADIUS, (200, 200, 200))
+    global navigation_mover # Circle that the player actually controls
+    navigation_mover = CircleSprite(True, NAVIGATION_POSITION, NAVIGATION_MOVER_RADIUS, COLOR_BLUE)
+    #navigation_mover.clickCallback = navigation_mover_clicked
+    # Top bar
+    global top_bar
+    top_bar = Sprite(True, Coords(0,TOP_BAR_Y), Scale(3000,50), COLOR_BLUE, None);

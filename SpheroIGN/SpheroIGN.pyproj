@@ -23,6 +23,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="MathHelperCoords.py" />
     <Compile Include="UiElements.py" />
     <Compile Include="CircleSprite.py" />
     <Compile Include="SpheroIGN.py" />
