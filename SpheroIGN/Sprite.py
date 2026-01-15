@@ -39,13 +39,3 @@ class Sprite:
     def render(self, screen):
         if self.showing:
             pygame.draw.rect(screen, rect = self.rect, color=self.color);
-
-    async def clicked(self):
-        self.isClicked = True;
-        if self.clickCallback != None:
-            self.clickCallback();
-
-    async def released(self):
-        self.isClicked = False;
-        if self.releaseCallback != None:
-            self.releaseCallback();

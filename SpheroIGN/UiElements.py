@@ -1,8 +1,10 @@
+from ast import Lambda
 from Sprite import Sprite
 from CircleSprite import CircleSprite
 from MathHelperCoords import Coords, Scale, Reference
 import pygame
 from ButtonClass import Button
+import GlobalLoopVariables
 
 # A simple reference class to hold values by reference.
 class Reference:
@@ -18,17 +20,6 @@ COLOR_GREY = (200,200,200);
 COLOR_GREEN = (0, 200, 100);
 COLOR_PURPLE = (200, 150, 220);
 
-# fires when the navigation mover is clicked
-@staticmethod
-async def navigation_mover_clicked(stillclicked : Reference, item : CircleSprite, return_x : int, return_y : int):
-    # Loop until released, stillclicked should be a boolean.
-    while stillclicked.value:
-        item.position.x = pygame.mouse.get_pos()[0] - item.scale.x // 2;
-        item.position.y = pygame.mouse.get_pos()[1] - item.scale.y // 2;
-    item.position.x = return_x;
-    item.position.y = return_y;
-    return;
-
 # CONSTANTS FOR UI ELEMENTS
 NAVIGATION_CONTAINER_RADIUS = 200;
 NAVIGATION_MOVER_RADIUS = 40;
@@ -36,18 +27,28 @@ NAVIGATION_BORDER_SIZE = 10;
 NAVIGATION_POSITION = Coords(1350, 700);
 TOP_BAR_Y = 0;
 
-# fires when the navigation mover is clicked
-@staticmethod
-async def navigation_mover_clicked(button, stillclicked : Reference):
-    global NAVIGATION_POSITION
-    # Loop until released, stillclicked should be a boolean.
-    while stillclicked.value:
-        button.sprite.position.x = pygame.mouse.get_pos()[0] - button.sprite.scale.x // 2;
-        button.sprite.position.y = pygame.mouse.get_pos()[1] - button.sprite.scale.y // 2;
-        button.sprite.position.x = NAVIGATION_POSITION.x;
-        button.sprite.position.y = NAVIGATION_POSITION.y;
-        return;
 
+# fires when the navigation mover is clicked
+#@staticmethod
+
+# This function is added to global callback list.
+def navigation_mover_held(button : Button):
+    button.boundSprite.position.x = pygame.mouse.get_pos()[0] - button.boundSprite.scale;
+    button.boundSprite.position.y = pygame.mouse.get_pos()[1] - button.boundSprite.scale;
+    print("Nav mover at: " + str(button.boundSprite.position.x) + ", " + str(button.boundSprite.position.y));
+
+def navigation_mover_clicked(button : Button, stillclicked : Reference):
+    # Loop until released, stillclicked should be a boolean.
+    button.heldCallbackID = len(GlobalLoopVariables.loop_callback_list.get());
+    GlobalLoopVariables.loop_callback_list.value.append(lambda: navigation_mover_held(button));
+    button.boundSprite.position = NAVIGATION_POSITION;
+    return;
+
+def navigation_mover_released(button : Button):
+    # Remove the held callback from the global loop callback list.
+    if button.heldCallbackID != -1:
+        GlobalLoopVariables.loop_callback_list.value.pop(button.heldCallbackID);
+        button.heldCallbackID = -1;
 
 def initElements():
     # These are the three circles that make the central navigation dial.
@@ -57,6 +58,9 @@ def initElements():
     navigation_holder = CircleSprite(True, NAVIGATION_POSITION, NAVIGATION_CONTAINER_RADIUS, COLOR_GREY)
     global navigation_mover # Circle that the player actually controls
     navigation_mover = CircleSprite(True, NAVIGATION_POSITION, NAVIGATION_MOVER_RADIUS, COLOR_BLUE)
+    navigation_mover_button = Button(navigation_mover_clicked);
+    navigation_mover_button.releaseCallback = navigation_mover_released;
+    navigation_mover_button.bindSprite(navigation_mover);
     #navigation_mover.clickCallback = navigation_mover_clicked
     # Top bar
     global top_bar

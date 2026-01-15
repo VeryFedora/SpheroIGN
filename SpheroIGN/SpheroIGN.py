@@ -2,8 +2,11 @@ import pygame
 import time 
 import sys
 import MathHelperCoords
+from MathHelperCoords import Reference
 import UiElements
 import SpheroManager
+import ButtonClass
+import GlobalLoopVariables
 from Sprite import Sprite
 from CircleSprite import CircleSprite
 
@@ -25,8 +28,13 @@ Sprite.init_all();
 
 BACKGROUND_COLOR : tuple = (255, 255, 255)
 UPDATE_RATE : int = 30; # Updates per second
-mouse_pos : tuple = (0,0);
+
 running : bool = True;
+# Discerning mouse properties
+mouse_pos : tuple = (0,0);
+mouse_down : Reference = Reference(False);
+bound_button : ButtonClass.Button = None;
+
 while(running): 
     mouse_pos = pygame.mouse.get_pos();
     pygame.display.flip();
@@ -39,14 +47,21 @@ while(running):
             continue;
         # Handle mouse events
         if event.type == pygame.MOUSEBUTTONDOWN:
-            for sprite in Sprite.sprite_list:
-                if sprite.rect.collidepoint(mouse_pos):
-                    sprite.clicked();
+            for button in ButtonClass.Button.button_list:
+                if(button.checkCollision()):
+                    bound_button = button;
+                    mouse_down.value = True;
+                    button.clicked(mouse_down);
+                    break;
         # Triggers once user releases the mouse.
         elif event.type == pygame.MOUSEBUTTONUP:
-            for sprite in Sprite.sprite_list:
-                if sprite.rect.collidepoint(mouse_pos):
-                    sprite.released();
+            if bound_button:
+                bound_button.released();
+                bound_button = None;
+                mouse_down.value = False;
+    # Call global loop callbacks, if any. This goes through all events requested by other sections.
+    for loop_callback in GlobalLoopVariables.loop_callback_list.get():
+        loop_callback();
     screen.fill(BACKGROUND_COLOR);
     Sprite.renderSprites(screen);
     CircleSprite.renderSprites(screen);
