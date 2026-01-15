@@ -9,13 +9,14 @@ class Reference:
     def __init__(self, val):
         self.value = val;
 
+# Color constants
 COLOR_BLUE = (0, 122, 255);
 COLOR_BLACK = (25, 25, 25);
 COLOR_RED = (200, 0, 0);
 COLOR_DARK_GREY = (100, 100, 100);
 COLOR_GREY = (200,200,200);
 COLOR_GREEN = (0, 200, 100);
-COLOR_PURPLE = (50, 50, 150);
+COLOR_PURPLE = (200, 150, 220);
 
 # fires when the navigation mover is clicked
 @staticmethod
@@ -62,18 +63,18 @@ def initElements():
     top_bar = Sprite(True, Coords(0,TOP_BAR_Y), Scale(3000,100), COLOR_BLUE, None);
     # Quit button on top bar
     global quit_button
-    quit_button = Sprite(True, Coords(1590,TOP_BAR_Y + 100), Scale(120,100), COLOR_RED, None);
+    quit_button = Sprite(True, Coords(1580,TOP_BAR_Y), Scale(130,100), COLOR_RED, None);
     # settings button
     global settings_button
-    settings_button = Sprite(True, Coords(770, TOP_BAR_Y + 100), Scale(150,100), COLOR_DARK_GREY, None);
+    settings_button = Sprite(True, Coords(775, TOP_BAR_Y), Scale(150,100), COLOR_DARK_GREY, None);
     # Home page button
     global home_button
-    home_button = Sprite(True, Coords(0, TOP_BAR_Y + 100), Scale(130,100), COLOR_GREEN, None);
+    home_button = Sprite(True, Coords(0, TOP_BAR_Y), Scale(130,100), COLOR_GREEN, None);
 
     ## Decoration for home page ##
     global circle_decor
-    circle_decor = CircleSprite(True, Coords(400, 400), 300, COLOR_PURPLE);
-    top_bar = Sprite(True, Coords(0,TOP_BAR_Y), Scale(3000,50), COLOR_BLUE, None);
+    circle_decor = CircleSprite(True, Coords(400, 400), 100, COLOR_PURPLE);
+   
 
 
 
