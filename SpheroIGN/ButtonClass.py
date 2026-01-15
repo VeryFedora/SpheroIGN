@@ -11,34 +11,38 @@ class Button:
         for button in Button.button_list:
             button.render(screen);
 
-    def __init__(self):
+    def __init__(self, callback, releaseCallback = None):
         self.ID = len(Button.button_list);
         Button.button_list.append(self);
-        self.clickCallback = None;
+        self.clickCallback = callback;
+        self.releaseCallback = releaseCallback;
         self.isClicked : Reference = Reference(False);
         self.boundSprite = None;
+        # Index of the callback in the global loop callback list, if present.
+        self.heldCallbackID = -1;
+        
      
     def bindSprite(self, sprite):
         self.boundSprite = sprite;
 
-    def checkCollision():
-        if self.sprite:
-            if type(self.sprite) == Sprite:
-                return self.sprite.rect.collidepoint(pygame.mouse.get_pos())
-            elif type(self.sprite) == CircleSprite:
-                dist_x = self.sprite.position.x - pygame.mouse.get_pos()[0];
-                dist_y = self.sprite.position.y - pygame.mouse.get_pos()[1];
-                distance = (dist_x ** 2 + dist_y ** 2) ** 0.5;
-                return distance <= self.sprite.scale;
+    def checkCollision(self):
+        if self.boundSprite:
+            if type(self.boundSprite) == Sprite:
+                return self.boundSprite.rect.collidepoint(pygame.mouse.get_pos())
+            elif type(self.boundSprite) == CircleSprite:
+                dist_x = self.boundSprite.position.x - pygame.mouse.get_pos()[0]
+                dist_y = self.boundSprite.position.y - pygame.mouse.get_pos()[1]
+                distance = (dist_x ** 2 + dist_y ** 2) ** 0.5
+                return distance <= self.boundSprite.scale
         
 
-    async def clicked(self):
-        self.isClicked = True;
+    def clicked(self, mouseDown : Reference):
+        self.isClicked = mouseDown;
         if self.clickCallback != None:
-            self.clickCallback();
+            self.clickCallback(self, mouseDown);
 
-    async def released(self):
-        self.isClicked = False;
+    def released(self):
+        self.isClicked.value = False;
         if self.releaseCallback != None:
-            self.releaseCallback();
+            self.releaseCallback(self);
 
