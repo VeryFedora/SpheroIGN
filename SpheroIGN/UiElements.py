@@ -1,4 +1,5 @@
 from ast import Lambda
+from copy import deepcopy
 from Sprite import Sprite
 from CircleSprite import CircleSprite
 from MathHelperCoords import Coords, Scale, Reference
@@ -32,15 +33,14 @@ TOP_BAR_Y = 0;
 
 # This function is added to global callback list.
 def navigation_mover_held(button : Button):
-    button.boundSprite.position.x = pygame.mouse.get_pos()[0] - button.boundSprite.scale;
-    button.boundSprite.position.y = pygame.mouse.get_pos()[1] - button.boundSprite.scale;
+    button.boundSprite.position.x = pygame.mouse.get_pos()[0];
+    button.boundSprite.position.y = pygame.mouse.get_pos()[1];
     print("Nav mover at: " + str(button.boundSprite.position.x) + ", " + str(button.boundSprite.position.y));
 
 def navigation_mover_clicked(button : Button, stillclicked : Reference):
     # Loop until released, stillclicked should be a boolean.
     button.heldCallbackID = len(GlobalLoopVariables.loop_callback_list.get());
     GlobalLoopVariables.loop_callback_list.value.append(lambda: navigation_mover_held(button));
-    button.boundSprite.position = NAVIGATION_POSITION;
     return;
 
 def navigation_mover_released(button : Button):
@@ -48,15 +48,18 @@ def navigation_mover_released(button : Button):
     if button.heldCallbackID != -1:
         GlobalLoopVariables.loop_callback_list.value.pop(button.heldCallbackID);
         button.heldCallbackID = -1;
+        button.boundSprite.position = NAVIGATION_POSITION;
+        print("SUPERJEW!")
+
 
 def initElements():
     # These are the three circles that make the central navigation dial.
     global navigation_border # Black border around it all
-    navigation_border = CircleSprite(True, NAVIGATION_POSITION, NAVIGATION_CONTAINER_RADIUS + NAVIGATION_BORDER_SIZE, COLOR_BLACK);
+    navigation_border = CircleSprite(True, deepcopy(NAVIGATION_POSITION), NAVIGATION_CONTAINER_RADIUS + NAVIGATION_BORDER_SIZE, COLOR_BLACK);
     global navigation_holder # Circle that contains the navigation mover
-    navigation_holder = CircleSprite(True, NAVIGATION_POSITION, NAVIGATION_CONTAINER_RADIUS, COLOR_GREY)
+    navigation_holder = CircleSprite(True, deepcopy(NAVIGATION_POSITION), NAVIGATION_CONTAINER_RADIUS, COLOR_GREY)
     global navigation_mover # Circle that the player actually controls
-    navigation_mover = CircleSprite(True, NAVIGATION_POSITION, NAVIGATION_MOVER_RADIUS, COLOR_BLUE)
+    navigation_mover = CircleSprite(True, deepcopy(NAVIGATION_POSITION), NAVIGATION_MOVER_RADIUS, COLOR_BLUE)
     navigation_mover_button = Button(navigation_mover_clicked);
     navigation_mover_button.releaseCallback = navigation_mover_released;
     navigation_mover_button.bindSprite(navigation_mover);
