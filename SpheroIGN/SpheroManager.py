@@ -25,7 +25,6 @@ subroutine_delta : Unit
 
 def init():
     player = Unit()
-
     global subroutine_alpha
     subroutine_alpha = Unit()
     global subroutine_beta

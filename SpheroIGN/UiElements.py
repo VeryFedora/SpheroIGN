@@ -1,4 +1,3 @@
-from ast import Lambda
 from copy import deepcopy
 from Sprite import Sprite
 from CircleSprite import CircleSprite
@@ -25,7 +24,7 @@ COLOR_PURPLE = (200, 150, 220);
 NAVIGATION_CONTAINER_RADIUS = 200;
 NAVIGATION_MOVER_RADIUS = 40;
 NAVIGATION_BORDER_SIZE = 10;
-NAVIGATION_POSITION = Coords(1350, 700);
+NAVIGATION_POSITION = pygame.Vector2(1350, 700);
 TOP_BAR_Y = 0;
 
 
@@ -34,11 +33,14 @@ TOP_BAR_Y = 0;
 
 # This function is added to global callback list.
 def navigation_mover_held(button : Button):
-    button.boundSprite.position.x = pygame.mouse.get_pos()[0];
-    button.boundSprite.position.y = pygame.mouse.get_pos()[1];
-    print("Nav mover at: " + str(button.boundSprite.position.x) + ", " + str(button.boundSprite.position.y));
+    mouse_pos = pygame.Vector2(pygame.mouse.get_pos())
+    direction = mouse_pos - NAVIGATION_POSITION
+    if direction.length() > NAVIGATION_CONTAINER_RADIUS-NAVIGATION_MOVER_RADIUS:
+        direction.scale_to_length(NAVIGATION_CONTAINER_RADIUS-NAVIGATION_MOVER_RADIUS)
 
-def navigation_mover_clicked(button : Button, stillclicked : Reference):
+    button.boundSprite.position = NAVIGATION_POSITION + direction
+
+def navigation_mover_clicked(button : Button):
     # Loop until released, stillclicked should be a boolean.
     button.heldCallbackID = len(GlobalLoopVariables.loop_callback_list.get());
     GlobalLoopVariables.loop_callback_list.value.append(lambda: navigation_mover_held(button));
@@ -50,8 +52,10 @@ def navigation_mover_released(button : Button):
         GlobalLoopVariables.loop_callback_list.value.pop(button.heldCallbackID);
         button.heldCallbackID = -1;
         button.boundSprite.position = NAVIGATION_POSITION;
-        print("SUPERJEW!")
 
+def quit_button_pressed(button : Button):
+    pygame.quit()
+    exit()
 
 def initElements():
     # These are the three circles that make the central navigation dial.
@@ -70,7 +74,9 @@ def initElements():
     top_bar = Sprite(True, Coords(0,TOP_BAR_Y), Scale(3000,100), COLOR_BLUE, None);
     # Quit button on top bar
     global quit_button
-    quit_button = Sprite(True, Coords(1580,TOP_BAR_Y), Scale(130,100), COLOR_RED, None);
+    quit_button_sprite = Sprite(True, Coords(1580,TOP_BAR_Y), Scale(130,100), COLOR_RED, None);
+    quit_button = Button(quit_button_pressed);
+    quit_button.bindSprite(quit_button_sprite);
     # settings button
     global settings_button
     settings_button = Sprite(True, Coords(775, TOP_BAR_Y), Scale(150,100), COLOR_DARK_GREY, None);

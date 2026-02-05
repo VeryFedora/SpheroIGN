@@ -50,8 +50,7 @@ while(running):
             for button in ButtonClass.Button.button_list:
                 if(button.checkCollision()):
                     bound_button = button;
-                    mouse_down.value = True;
-                    button.clicked(mouse_down);
+                    button.clicked();
                     break;
         # Triggers once user releases the mouse.
         elif event.type == pygame.MOUSEBUTTONUP:

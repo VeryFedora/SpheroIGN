@@ -2,7 +2,6 @@ import pygame
 from Sprite import Sprite
 from CircleSprite import CircleSprite
 
-from MathHelperCoords import Reference
 class Button:
     button_list = []
 
@@ -16,7 +15,7 @@ class Button:
         Button.button_list.append(self);
         self.clickCallback = callback;
         self.releaseCallback = releaseCallback;
-        self.isClicked : Reference = Reference(False);
+        self.isClicked = False;
         self.boundSprite = None;
         # Index of the callback in the global loop callback list, if present.
         self.heldCallbackID = -1;
@@ -36,13 +35,13 @@ class Button:
                 return distance <= self.boundSprite.scale
         
 
-    def clicked(self, mouseDown : Reference):
-        self.isClicked = mouseDown;
+    def clicked(self):
+        self.isClicked = True;
         if self.clickCallback != None:
-            self.clickCallback(self, mouseDown);
+            self.clickCallback(self);
 
     def released(self):
-        self.isClicked.value = False;
+        self.isClicked = False;
         if self.releaseCallback != None:
             self.releaseCallback(self);
 
