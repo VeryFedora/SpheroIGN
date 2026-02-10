@@ -88,6 +88,14 @@ def initElements():
     global circle_decor
     circle_decor = CircleSprite(True, Coords(400, 400), 100, COLOR_PURPLE);
    
+def change_theme_to_red():
+    global navigation_border;
+    navigation_border.color = COLOR_RED;
+    global navigation_holder;
+    navigation_holder.color = COLOR_DARK_GREY;
+    global naigation_mover;
+    navigation_mover.color = COLOR_RED;
+    global top_bar;
+    top_bar.color = COLOR_RED;
 
-
-
+change_theme_to_red();
