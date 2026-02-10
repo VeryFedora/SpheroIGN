@@ -99,3 +99,4 @@ def change_theme_to_red():
     top_bar.color = COLOR_RED;
 
 change_theme_to_red();
+    
