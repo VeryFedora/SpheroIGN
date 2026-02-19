@@ -5,6 +5,8 @@ from MathHelperCoords import Coords, Scale, Reference
 import pygame
 from ButtonClass import Button
 import GlobalLoopVariables
+import math
+import SpheroManager
 
 # A simple reference class to hold values by reference.
 class Reference:
@@ -27,19 +29,21 @@ NAVIGATION_BORDER_SIZE = 10;
 NAVIGATION_POSITION = pygame.Vector2(1350, 700);
 TOP_BAR_Y = 0;
 
-
-# fires when the navigation mover is clicked
-#@staticmethod
-
 # This function is added to global callback list.
 def navigation_mover_held(button : Button):
+    # This handles the actual placement of the mover.
     mouse_pos = pygame.Vector2(pygame.mouse.get_pos())
     direction = mouse_pos - NAVIGATION_POSITION
     if direction.length() > NAVIGATION_CONTAINER_RADIUS-NAVIGATION_MOVER_RADIUS:
         direction.scale_to_length(NAVIGATION_CONTAINER_RADIUS-NAVIGATION_MOVER_RADIUS)
 
     button.boundSprite.position = NAVIGATION_POSITION + direction
+    # This is where you would add code to control the robot
+    angle = math.degrees(math.atan2(navigation_mover.position.x, navigation_mover.position.y));
+    SpheroManager.sphero.setHeading(angle);
 
+
+# fires when the navigation mover is clicked
 def navigation_mover_clicked(button : Button):
     # Loop until released, stillclicked should be a boolean.
     button.heldCallbackID = len(GlobalLoopVariables.loop_callback_list.get());
@@ -87,6 +91,8 @@ def initElements():
     ## Decoration for home page ##
     global circle_decor
     circle_decor = CircleSprite(True, Coords(400, 400), 100, COLOR_PURPLE);
+
+
    
 
 
