@@ -1,13 +1,13 @@
 from copy import deepcopy
 from Sprite import Sprite
 from CircleSprite import CircleSprite
-from MathHelperCoords import Coords, Scale, Reference
-import pygame
+from MathHelperCoords import Coords, Scale
+from SYSLIB import pygame
 from ButtonClass import Button
 import GlobalLoopVariables
 import math
-import SpheroManager
-
+from SpheroManager import Robot 
+from SpheroManager import robot
 # A simple reference class to hold values by reference.
 class Reference:
     def __init__(self, val):
@@ -40,7 +40,7 @@ def navigation_mover_held(button : Button):
     button.boundSprite.position = NAVIGATION_POSITION + direction
     # This is where you would add code to control the robot
     angle = math.degrees(math.atan2(navigation_mover.position.x, navigation_mover.position.y));
-    SpheroManager.sphero.setHeading(angle);
+    robot.setHeading(angle);
 
 
 # fires when the navigation mover is clicked

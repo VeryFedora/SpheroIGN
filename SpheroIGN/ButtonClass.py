@@ -1,4 +1,4 @@
-import pygame
+from SYSLIB import pygame
 from Sprite import Sprite
 from CircleSprite import CircleSprite
 

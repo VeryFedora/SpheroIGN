@@ -25,6 +25,7 @@
   <ItemGroup>
     <Compile Include="ButtonClass.py" />
     <Compile Include="MathHelperCoords.py" />
+    <Compile Include="SYSLIB.py" />
     <Compile Include="UiElements.py" />
     <Compile Include="CircleSprite.py" />
     <Compile Include="SpheroIGN.py" />

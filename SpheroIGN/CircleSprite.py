@@ -1,4 +1,4 @@
-import pygame
+from SYSLIB import pygame
 from MathHelperCoords import Coords
 
 class CircleSprite:

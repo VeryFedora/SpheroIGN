@@ -1,5 +1,4 @@
-import pygame
-import pygame.image
+from SYSLIB import pygame
 from MathHelperCoords import Coords, Scale, getScreenSize
 
 class Sprite:

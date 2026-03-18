@@ -1,23 +1,25 @@
-import SpheroIGN
-from spherov2 import scanner
 from spherov2.sphero_edu import SpheroEduAPI
-
+from spherov2 import scanner
+from SYSLIB import asyncio
+from spherov2.types import Color
 
 # Class that holds the sphero
 class Robot:
-    def __init__(self, mode):
-        try:
-            self.robot = scanner.find_toy()
+    def init(self, mode):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        self.robot = scanner.find_toy()
+        with SpheroEduAPI(self.robot) as robot:
             if(self.robot):
-                self.robot.wake()
-                self.robot.connect()
-                print("Connected to Sphero RVR")
+                print("HOY")
+            else:
+                print("No robot found!")
+                exit()
+            print("Connected to Sphero RVR")
             if mode == "G":
-                self.robot.set_main_led(color=[125, 0, 0])  # Red for ghost.
+                robot.set_main_led(color=[125, 0, 0])  # Red for ghost.
             elif mode == "P":
-                self.robot.set_main_led(color=[0,125,125]) # Teal for player
-        except Exception as e:
-            SpheroIGN.endProgram(str(e));
+                robot.set_back_led(Color(r=0,g=255,b=0))
 
     def setHeading(self, angle):
         with SpheroEduAPI(self.robot) as robot:
@@ -28,10 +30,13 @@ class Robot:
             robot.set_speed(speed)
     
 
-robot : Robot
+robot : Robot = None
            
 def init():
     global robot
     robot = Robot()
+    robot.init("P")
+    print("HEEEELLPPP")
     
+    # then initialize pygame / GUI
 

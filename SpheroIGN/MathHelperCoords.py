@@ -1,4 +1,3 @@
-import pygame
 screen_dimensions = [(None, None)]
 def fix_screen_dimensions(size):
     global screen_dimensions
