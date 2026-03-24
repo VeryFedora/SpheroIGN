@@ -64,5 +64,9 @@ def run():
         screen.fill(BACKGROUND_COLOR);
         Sprite.renderSprites(screen);
         CircleSprite.renderSprites(screen);
+    pygame.quit();
+    SpheroManager.robot.actual_robot.__exit__(None, None, None)  # clean up
+    del SpheroManager.robot.actual_robot
+    del SpheroManager.robot.robot
     
 run();

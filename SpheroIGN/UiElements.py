@@ -6,8 +6,7 @@ from SYSLIB import pygame
 from ButtonClass import Button
 import GlobalLoopVariables
 import math
-from SpheroManager import Robot 
-from SpheroManager import robot
+import SpheroManager
 # A simple reference class to hold values by reference.
 class Reference:
     def __init__(self, val):
@@ -29,6 +28,12 @@ NAVIGATION_BORDER_SIZE = 10;
 NAVIGATION_POSITION = pygame.Vector2(1350, 700);
 TOP_BAR_Y = 0;
 
+def x_percent_of_y(x,y):
+    return x * y / 100;
+
+def max_distance():
+    return NAVIGATION_CONTAINER_RADIUS - NAVIGATION_MOVER_RADIUS;
+
 # This function is added to global callback list.
 def navigation_mover_held(button : Button):
     # This handles the actual placement of the mover.
@@ -40,7 +45,8 @@ def navigation_mover_held(button : Button):
     button.boundSprite.position = NAVIGATION_POSITION + direction
     # This is where you would add code to control the robot
     angle = math.degrees(math.atan2(navigation_mover.position.x, navigation_mover.position.y));
-    robot.setHeading(angle);
+    SpheroManager.robot.setHeading(angle);
+    SpheroManager.robot.setSpeed(x_percent_of_y(direction.length(), max_distance()))
 
 
 # fires when the navigation mover is clicked
@@ -56,9 +62,14 @@ def navigation_mover_released(button : Button):
         GlobalLoopVariables.loop_callback_list.value.pop(button.heldCallbackID);
         button.heldCallbackID = -1;
         button.boundSprite.position = NAVIGATION_POSITION;
+        SpheroManager.robot.setSpeed(0)
+
 
 def quit_button_pressed(button : Button):
     pygame.quit()
+    SpheroManager.robot.actual_robot.__exit__(None, None, None)  # clean up
+    del SpheroManager.robot.actual_robot
+    del SpheroManager.robot.robot
     exit()
 
 def change_theme_to_red():
