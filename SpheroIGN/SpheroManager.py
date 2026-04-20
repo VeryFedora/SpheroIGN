@@ -35,18 +35,18 @@ class Robot:
             self.actual_robot.set_main_led(Color(r=255,g=255,b=0))
         self.actual_robot.set_heading(0)
 
-
     def setHeading(self, angle):
         print(abs(self.angle - angle))
         if(abs(self.angle - angle) > 1):
-            self.actual_robot.set_heading(int(round(angle)))
+            self.actual_robot.set_heading(int(round(angle))*15)
             self.angle = int(round(angle))
-            print(self.angle);
+            print("Rotating");
 
     def setSpeed(self, speed):
         if(abs(self.speed - speed) > 10):
-            self.actual_robot.set_speed(int(round(speed)))
-            self.speed = int(round(speed))
+            self.actual_robot.set_speed(int(round(speed/2)))
+            self.speed = int(round(speed)/float(2))
+            
     
 
 robot : Robot = None

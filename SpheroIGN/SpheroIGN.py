@@ -29,7 +29,7 @@ def run():
     UiElements.initElements();
     Sprite.init_all();
     BACKGROUND_COLOR : tuple = (255, 255, 255)
-    UPDATE_RATE : int = 30; # Updates per second
+    UPDATE_RATE : int = 60; # Updates per second
     global running
     global mouse_pos
     global mouse_down 
