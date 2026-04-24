@@ -1,4 +1,7 @@
 <Solution>
+  <Project Path="Server/Server.pyproj" Type="888888a0-9f3d-457c-b088-3a5042f75d52" Id="dbc5ade9-5224-43d4-9638-f1448639097d">
+    <Build Project="false" />
+  </Project>
   <Project Path="SpheroIGN/SpheroIGN.pyproj" Type="888888a0-9f3d-457c-b088-3a5042f75d52" Id="887b0cc2-8127-4620-be4a-759c0960a558">
     <Build Project="false" />
   </Project>

@@ -50,7 +50,7 @@ class Robot:
     
 
 robot : Robot = None
-           
+
 def init():
     global robot
     robot = Robot()
