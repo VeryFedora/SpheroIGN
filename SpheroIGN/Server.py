@@ -16,8 +16,7 @@ class ConnectedDevice:
         self.port = port
         self.id = len(ConnectedDevice.connectedDevices) + 1  # Simple ID assignment based on current count)
         ConnectedDevice.connectedDevices.append(self)
-
-        sock.send(f"ACK_JOIN:{self.id}".encode('utf-8'), (self.ip_address, self.port))
+        print("New device connected: " + self.__str__())
 
     def __str__(self):
         return f"ConnectedDevice(ip_address={self.ip_address}, port={self.port})"
@@ -42,7 +41,7 @@ def start():
     receiver_thread.start()
 
     CollidedObjects = []
-
+    
     while SYSLIB.running.get():
         if not inbox.empty():
             msg = inbox.get()
@@ -50,7 +49,7 @@ def start():
 
             if msg['msg'] == "JOIN":
                 print(f"Device {msg['sender']} has joined the network.")
-                sock.send(f"ACK_JOIN".encode('utf-8'), (msg['sender'][0], msg['sender'][1]))
+                sock.sendto("ACK_JOIN".encode(), (msg['sender'][0], msg['sender'][1]))
                 ConnectedDevice(msg['sender'][0], msg['sender'][1])
 
             elif msg['msg'] == "LEAVE":
@@ -69,6 +68,6 @@ def start():
                 )
     for device in ConnectedDevice.connectedDevices:
         if device != None:
-            sock.send(f"SERVER_SHUTDOWN".encode('utf-8'), (device.ip_address, device.port))
+            sock.sendto(f"SERVER_SHUTDOWN".encode('utf-8'), (device.ip_address, device.port))
     sock.detach();
     sock.shutdown();

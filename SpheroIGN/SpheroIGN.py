@@ -11,7 +11,7 @@ import GlobalLoopVariables
 from Sprite import Sprite
 from CircleSprite import CircleSprite
 import SYSLIB
-
+import ClientSide__temporary_
 #### PROGRAM START #### 
 running : bool = True;
 # Discerning mouse properties
@@ -20,6 +20,7 @@ mouse_down : Reference = Reference(False);
 bound_button : ButtonClass.Button = None;
 def run():
     SpheroManager.init()
+    ClientSide__temporary_.initClient()
     pygame.init()
     MathHelperCoords.fix_screen_dimensions(pygame.display.get_desktop_sizes());
     print(str(MathHelperCoords.getScreenSize()));
