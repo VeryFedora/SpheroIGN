@@ -2,9 +2,11 @@ import socket
 import threading
 import queue
 import time
+import SYSLIB
 
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# 0.0.0.0 means to let it listen for any interface for any device. i used 5005 because i felt like it and because its over 1024
 sock.bind(("0.0.0.0", 5005))
 
 # Each connected device will be represented as an instance of this class.
@@ -21,7 +23,7 @@ class ConnectedDevice:
     def __str__(self):
         return f"ConnectedDevice(ip_address={self.ip_address}, port={self.port})"
 
-    
+# literally just a list of stuff we've collected.
 inbox = queue.Queue();
 
 def PassiveReceiver():
@@ -30,7 +32,7 @@ def PassiveReceiver():
         data, addr = sock.recvfrom(1024)
         # Store data with the exact float time of arrival
         inbox.put(
-        {
+        {   # I miss "struct" from C :(
             "time": time.time(), 
             "msg": data.decode('utf-8', 'ignore'),
             "sender": addr
@@ -48,6 +50,7 @@ while 1:
 
         if msg['msg'] == "JOIN":
             print(f"Device {msg['sender']} has joined the network.")
+            sock.send(f"ACK_JOIN".encode('utf-8'), (msg['sender'][0], msg['sender'][1]))
             ConnectedDevice(msg['sender'][0], msg['sender'][1])
 
         elif msg['msg'] == "LEAVE":

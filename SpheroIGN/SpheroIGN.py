@@ -10,7 +10,7 @@ import ButtonClass
 import GlobalLoopVariables
 from Sprite import Sprite
 from CircleSprite import CircleSprite
-
+import SYSLIB
 
 #### PROGRAM START #### 
 running : bool = True;
@@ -35,7 +35,7 @@ def run():
     global mouse_down 
     global bound_button
     
-    while(running): 
+    while(SYSLIB.running.get()): 
         mouse_pos = pygame.mouse.get_pos();
         pygame.display.flip();
         time.sleep(1/UPDATE_RATE);
@@ -64,6 +64,7 @@ def run():
         screen.fill(BACKGROUND_COLOR);
         Sprite.renderSprites(screen);
         CircleSprite.renderSprites(screen);
+    SYSLIB.running.set(False);
     pygame.quit();
     SpheroManager.robot.actual_robot.__exit__(None, None, None)  # clean up
     del SpheroManager.robot.actual_robot

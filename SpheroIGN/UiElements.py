@@ -20,6 +20,9 @@ COLOR_DARK_GREY = (100, 100, 100);
 COLOR_GREY = (200,200,200);
 COLOR_GREEN = (0, 200, 100);
 COLOR_PURPLE = (200, 150, 220);
+COLOR_CYAN = (0, 200, 200);
+COLOR_YELLOW = (200, 200, 0);
+COLOR_PINK = (255, 105, 180);
 
 # CONSTANTS FOR UI ELEMENTS
 NAVIGATION_CONTAINER_RADIUS = 200;
@@ -44,9 +47,10 @@ def navigation_mover_held(button : Button):
 
     button.boundSprite.position = NAVIGATION_POSITION + direction
     # This is where you would add code to control the robot
-    angle = math.degrees(math.atan2(navigation_mover.position.x, navigation_mover.position.y));
-    SpheroManager.robot.setHeading(angle);
-    SpheroManager.robot.setSpeed(x_percent_of_y(direction.length(), max_distance()))
+    if(ticks := pygame.time.get_ticks()) % 10 == 0: # Only update every 10ms, otherwise it gets really laggy.
+        angle = math.degrees(math.atan2(navigation_mover.position.x, navigation_mover.position.y));
+        SpheroManager.robot.setHeading(angle);
+        SpheroManager.robot.setSpeed(x_percent_of_y(direction.length(), max_distance()))
 
 
 # fires when the navigation mover is clicked
